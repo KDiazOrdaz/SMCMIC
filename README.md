@@ -49,3 +49,4 @@ A function implementing TSRI for more general use has been provided in the file 
 Sample code that uses the R package smcfcs can be Example_smcmic.R
 
 
+New version coming soon
