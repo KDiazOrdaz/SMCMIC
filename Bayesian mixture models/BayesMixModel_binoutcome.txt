@@ -1,0 +1,22 @@
+# mean outcome model such that different in each compliance class
+# one-way non-compliance, so no always-takers
+model {
+  for (i  in 1:N.obs) {
+    #binary outcome								
+    y[i] ~ dbern(p[i])
+    logit(p[i]) <- a[1] + a[2] * cmp[i]+ a[3]*cmp[i]*rnd[i]    
+    #Compliance modelled as Bernoulli
+    #with controls as missing:
+    cmp[i] ~ dbern(pi)
+    # may depend on baseline cov
+    #logit(pi[i])<- b[1]
+  
+  }
+  #  	Priors:
+  pi ~ dbeta(1,1)
+  for (j in 1:2) {
+    a[j] ~ dnorm(0, 0.038416)
+  }
+  a[3] ~ dnorm(2,  0.38416)
+  
+}

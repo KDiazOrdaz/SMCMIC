@@ -1,0 +1,35 @@
+#compliance class model, missing for controls
+#Unobserved X1
+#X2 is an auxiliary variable when Y is missing
+
+model {
+  		for (i  in 1:N.obs) {
+  	 #auxiliary variable model, useful when y miss
+      x2[i] ~ dnorm(mux[i],tau2)
+      mux[i]<- c[1] + c[2]* y[i] + c[3]*cmp[i] + c[4]*y[i]*cmp[i]+ c[5]*rnd[i]+ c[6]*rnd[i]*cmp[i] 
+      #binary outcome								
+      y[i] ~ dbern(p[i])
+      logit(p[i]) <- a[1] + a[2] * cmp[i]+ a[3]*cmp[i]*rnd[i]
+#Compliance modelled as Bernoulli
+#with controls as missing:
+			cmp[i] ~ dbern(pi)
+			}
+			#  	Priors:
+			for (j in 1:3) {
+					a[j] ~ dnorm(0, .001)
+								}
+						 pi ~ dbeta(1,1)	
+				
+					for (j in 1:6) {
+				c[j] ~ dnorm(0, 0.001)
+						}
+					tau <-  1 / pow(out.sd, 2)
+          out.sd ~ dgamma(0.01,0.01)
+					
+					tau2 <-  1 / pow(out.sd2, 2)
+          out.sd2 ~ dgamma(0.01,0.01)
+  
+}
+			
+	
+

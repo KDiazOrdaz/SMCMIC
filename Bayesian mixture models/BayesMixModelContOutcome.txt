@@ -1,0 +1,21 @@
+#compliance class model, missing for controls
+#  Unobserved variable X1
+##Continuous outcome ###
+model {
+  for (i  in 1:N.obs) {
+    y[i] ~ dnorm(phi[i], tau)
+    phi[i] <- a[1] + a[2] * cmp[i]+ a[3]*cmp[i]*rnd[i]
+    #Compliance modelled as Bernoulli
+    #with controls as missing:
+    cmp[i] ~ dbern(pi)
+  }
+  #  	Priors:
+  pi ~ dbeta(1,1)
+  for (j in 1:3) {
+    a[j] ~ dnorm(0, .001)
+  }
+  
+  #Priors for precision:
+  tau <-  1 / pow(out.sd, 2)
+  out.sd ~ dgamma(0.01,0.01)
+  
